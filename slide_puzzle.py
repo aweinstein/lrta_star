@@ -50,17 +50,17 @@ class SlidePuzzle(object):
 	grid = self.grid
 	n = self.n
 	if i - 1 >= 0: # check to the left
-	    acts.append(((i-1, j), (i,j)))
+	    acts.append((i-1, j))
 	if i + 1 < n: # check to the right
-	    acts.append(((i+1, j), (i, j)))
+	    acts.append((i+1, j))
 	if j - 1 >= 0: # check up
-	    acts.append(((i, j-1), (i, j)))
+	    acts.append((i, j-1))
 	if j + 1 < n: # check down
-	    acts.append(((i, j+1), (i, j)))
+	    acts.append((i, j+1))
         return acts
 
     def move(self, location):
-	i, j = location[0]
+	i, j = location
 	p, q = self.space
 	self.grid[i][j], self.grid[p][q] = self.grid[p][q], self.grid[i][j]
 	self.space = (i, j)
