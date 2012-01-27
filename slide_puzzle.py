@@ -1,32 +1,40 @@
 from random import choice
 from copy import deepcopy
+from math import sqrt
 
 def to_tuple_of_tuples(lol):
     """Convert a list of lists into a tuple of tuples."""
     return tuple(tuple(row) for row in lol)
 
 class SlidePuzzle(object):
-    def __init__(self, n=3):
-	grid = [[None] * n for _ in range(n)]
-	# For the moment a fix initial state
-	numbers = range(1, n**2)
-	l = 0
-	for i in range(n):
-	    for j in range(n):
-		if i == n - 1 and j == n - 1:
-		    break
-		grid[i][j] = numbers[l]
-		l += 1
-	self.space = (n - 1, n - 1)
-	self.grid = grid
-        self.goal_grid = deepcopy(grid)
-        # dicttionary with the goal positions
-        tile_goals = {}
+    def __init__(self, n=3, grid_list=None):
+        if grid_list is None:
+            grid_list = range(1, n**2)
+            grid_list.append(None)
+        
+        grid = [[None] * n for _ in range(n)]
+        l = 0
         for i in range(n):
             for j in range(n):
-                tile = grid[i][j]
-                if tile:
+                grid[i][j] = grid_list[l]
+                if grid_list[l] is None:
+                    self.space = (i, j)
+                l += 1
+        print grid_list
+        print grid
+                
+	self.grid = grid
+        # dicttionary with the goal positions
+        tile_goals = {}
+        goal_grid = [[None] * n for _ in range(n)]
+        tile = 1
+        for i in range(n):
+            for j in range(n):
+                if tile < n**2:
                     tile_goals[tile] = (i, j)
+                    goal_grid[i][j] = tile
+                tile += 1
+        self.goal_grid = goal_grid
         self.tile_goals = tile_goals
 	self.n = n
 
@@ -140,9 +148,6 @@ def solve(p):
             return locals()
         iters += 1
                 
-
-        
-        
 def experiment_1():
     print 'Testing slide puzzle'
     puzzle = SlidePuzzle()
@@ -158,10 +163,15 @@ def experiment_1():
 
 def experiment_2():
     puzzle = SlidePuzzle(3)
-    puzzle.shuffle(1000)
+    puzzle.shuffle(5)
     solve(puzzle)
+    return locals()
+
+def experiment_3():
+    p = SlidePuzzle(grid_list=[7,8,6,5,3,2,1,None,4])
+    solve(p)
     return locals()
     
 if __name__ == '__main__':
-    d = experiment_2()
+    d = experiment_3()
     locals().update(d)
