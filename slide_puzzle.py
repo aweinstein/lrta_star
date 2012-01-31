@@ -100,7 +100,7 @@ class SlidePuzzle(object):
 
         Use the sum of the Manhattan distances from current position to the goal.
 
-        If `grid` is None, use the current state grid. Other wise use `grid`.
+        If `grid` is None, use the current state grid. Otherwise use `grid`.
         """
         if grid is None:
             grid = self.grid
